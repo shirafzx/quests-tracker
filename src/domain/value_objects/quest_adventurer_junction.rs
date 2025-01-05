@@ -9,7 +9,7 @@ use crate::{
 #[diesel(belongs_to(AdventurerEntity, foreign_key = adventurer_id))]
 #[diesel(belongs_to(QuestEntity, foreign_key = quest_id))]
 #[diesel(table_name = quest_adventurer_junction)]
-pub struct QuestAdventureJunction {
+pub struct QuestAdventurerJunction {
   pub adventurer_id: i32,
   pub quest_id: i32,
 }
