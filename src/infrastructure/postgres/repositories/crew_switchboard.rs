@@ -3,21 +3,21 @@ use anyhow::Result;
 use axum::async_trait;
 
 use crate::{
-  domain::{repositories::crew_switchboard::CrewSwitchBoardRepository, value_objects::quest_adventurer_junction::QuestAdventurerJunction}, infrastructure::postgres::postgres_connection::PgPoolSquad
+  domain::{repositories::crew_switchboard::CrewSwitchboardRepository, value_objects::quest_adventurer_junction::QuestAdventurerJunction}, infrastructure::postgres::postgres_connection::PgPoolSquad
 };
 
-pub struct CrewSwitchBoardPostgres {
+pub struct CrewSwitchboardPostgres {
   db_pool: Arc<PgPoolSquad>,
 }
 
-impl CrewSwitchBoardPostgres {
+impl CrewSwitchboardPostgres {
   pub fn new(db_pool: Arc<PgPoolSquad>) -> Self {
     Self { db_pool }
   }
 }
 
 #[async_trait]
-impl CrewSwitchBoardRepository for CrewSwitchBoardPostgres {
+impl CrewSwitchboardRepository for CrewSwitchboardPostgres {
   async fn join(&self, junction_body: QuestAdventurerJunction) -> Result<()> {
     unimplemented!()
   }
