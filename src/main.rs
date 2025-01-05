@@ -1,6 +1,9 @@
 use std::sync::Arc;
 
-use quests_tracker::{config::config_loader, infrastructure::{axum_http::http_serve::start, postgres::postgres_connection}};
+use quests_tracker::{
+    config::config_loader,
+    infrastructure::{axum_http::http_serve::start, postgres::postgres_connection},
+};
 use tracing::{error, info};
 
 #[tokio::main]
