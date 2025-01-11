@@ -35,7 +35,7 @@ where
     {
         Ok(adventurer_id) => (
             StatusCode::CREATED,
-            format!("Registered adventurer id: {}", adventurer_id),
+            format!("Registered adventurer id: {} successfully", adventurer_id),
         ),
         Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()),
     }
