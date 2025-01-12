@@ -2,8 +2,7 @@ use chrono::NaiveDateTime;
 use diesel::prelude::*;
 
 use crate::{
-    domain::value_objects::{quest_model::QuestModel, quest_statuses::QuestStatuses},
-    infrastructure::postgres::schema::quests,
+    domain::value_objects::quest_model::QuestModel, infrastructure::postgres::schema::quests,
 };
 
 #[derive(Debug, Clone, Identifiable, Selectable, Queryable)]
@@ -12,7 +11,7 @@ pub struct QuestEntity {
     pub id: i32,
     pub name: String,
     pub description: Option<String>,
-    pub status: QuestStatuses,
+    pub status: String,
     pub guild_commander_id: i32,
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,

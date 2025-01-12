@@ -11,24 +11,46 @@ pub struct QuestViewingUseCase<T>
 where
     T: QuestViewingRepository + Send + Sync,
 {
-    quests_viewing_repository: Arc<T>,
+    quest_viewing_repository: Arc<T>,
 }
 
 impl<T> QuestViewingUseCase<T>
 where
     T: QuestViewingRepository + Send + Sync,
 {
-    pub fn new(quests_viewing_repository: Arc<T>) -> Self {
+    pub fn new(quest_viewing_repository: Arc<T>) -> Self {
         Self {
-            quests_viewing_repository,
+            quest_viewing_repository,
         }
     }
 
     pub async fn view_details(&self, quest_id: i32) -> Result<QuestModel> {
-        unimplemented!()
+        let result = self.quest_viewing_repository.view_details(quest_id).await?;
+
+        let adventurers_count = self
+            .quest_viewing_repository
+            .adventurers_counting_by_quest_id(quest_id)
+            .await?;
+
+        let quest_model = result.to_model(adventurers_count);
+
+        Ok(quest_model)
     }
 
     pub async fn board_checking(&self, filter: &BoardCheckingFilter) -> Result<Vec<QuestModel>> {
-        unimplemented!()
+        let results = self.quest_viewing_repository.board_checking(filter).await?;
+        println!("{:?}", results);
+        let mut quests_model: Vec<QuestModel> = Vec::new();
+        for quest in results.into_iter() {
+            let adventurers_count = self
+                .quest_viewing_repository
+                .adventurers_counting_by_quest_id(quest.id)
+                .await?;
+
+            let quest_model = quest.to_model(adventurers_count);
+            quests_model.push(quest_model);
+        }
+
+        Ok(quests_model)
     }
 }
