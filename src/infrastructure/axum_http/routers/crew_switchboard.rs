@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use axum::{
     extract::{Path, State},
+    http::StatusCode,
     middleware,
     response::IntoResponse,
     routing::{delete, post},
@@ -49,7 +50,20 @@ where
     T1: CrewSwitchboardRepository + Send + Sync,
     T2: QuestViewingRepository + Send + Sync,
 {
-    unimplemented!()
+    match crew_switchboard_use_case
+        .join(quest_id, adventurer_id)
+        .await
+    {
+        Ok(_) => (
+            StatusCode::OK,
+            format!(
+                "Adventurer id: {} has joined quest id {}",
+                adventurer_id, quest_id
+            ),
+        )
+            .into_response(),
+        Err(err) => (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()).into_response(),
+    }
 }
 
 pub async fn leave<T1, T2>(
@@ -61,5 +75,18 @@ where
     T1: CrewSwitchboardRepository + Send + Sync,
     T2: QuestViewingRepository + Send + Sync,
 {
-    unimplemented!()
+    match crew_switchboard_use_case
+        .leave(quest_id, adventurer_id)
+        .await
+    {
+        Ok(_) => (
+            StatusCode::OK,
+            format!(
+                "Adventurer id: {} has left quest id {}",
+                adventurer_id, quest_id
+            ),
+        )
+            .into_response(),
+        Err(err) => (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()).into_response(),
+    }
 }
